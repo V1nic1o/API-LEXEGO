@@ -1,26 +1,28 @@
 // cmd/api/main.go
-
 package main
 
 import (
-	"analizador/lexico/api" // Importamos el paquete 'api' que contiene nuestro handler
+	"analizador/lexico/api" // Corregido: La ruta correcta al paquete 'api'
 	"fmt"
 	"log"
 	"net/http"
+	"os" // 1. IMPORTAMOS EL PAQUETE 'os' para leer variables de entorno
 )
 
 func main() {
-	// 1. Registramos nuestro manejador (handler) en una ruta específica.
-	// Cada vez que alguien haga una petición a "/analizar", se ejecutará la función AnalizarHandler.
+	// 2. LEEMOS LA VARIABLE DE ENTORNO 'PORT' QUE NOS DARÁ RENDER
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // Si no existe (en tu compu), usamos 8080 como respaldo
+	}
+
+	// Registramos nuestro manejador (handler) en la ruta "/analizar"
 	http.HandleFunc("/analizar", api.AnalizarHandler)
 
-	// 2. Definimos el puerto en el que escuchará nuestro servidor.
-	puerto := ":8080"
-	fmt.Printf("Servidor API iniciado. Escuchando en http://localhost%s\n", puerto)
+	fmt.Printf("Servidor API iniciado. Escuchando en el puerto :%s\n", port)
 	fmt.Println("Esperando peticiones en el endpoint /analizar ...")
 
-	// 3. Iniciamos el servidor.
-	// http.ListenAndServe se queda escuchando por peticiones y nunca termina,
-	// a menos que haya un error fatal.
-	log.Fatal(http.ListenAndServe(puerto, nil))
+	// 3. INICIAMOS EL SERVIDOR USANDO EL PUERTO CORRECTO
+	// Render necesita que escuchemos en "0.0.0.0:<puerto>" que se abrevia como ":<puerto>"
+	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
