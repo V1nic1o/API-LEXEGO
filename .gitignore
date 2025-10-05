@@ -1,0 +1,26 @@
+# Archivo .gitignore para el proyecto de Go
+
+# Binarios compilados
+# La "/" al principio asegura que SÓLO se ignoren los archivos ejecutables
+# en la raíz del proyecto, y NO las carpetas de código fuente.
+/cli
+*.exe
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de configuración del editor/IDE
+.vscode/
+.idea/
+
+# Archivos de entorno (buenas prácticas)
+.env
+.env.local
+.env.*.local
+
+# Archivos de log
+*.log
+
+# Archivos de cobertura de pruebas
+*.out
