@@ -144,3 +144,35 @@ func (a *AnalizadorLexico) reconocerNumero() Token {
 	lexema := string(a.fuente[posicionInicial : a.posicion-1])
 	return Token{Type: tipo, Lexema: lexema, Linea: lineaActual, Columna: columnaActual}
 }
+
+// reconocerDinero consume y valida el formato de tiempo HH:MM:SS.
+func (a *AnalizadorLexico) reconocerDinero() Token {
+	lineaActual, columnaActual := a.linea, a.columna
+	posicionInicial := a.posicion - 1 // Captura el primer 'H'
+
+	// Ya hemos validado el patrón con peek, así que solo consumimos los 8 caracteres
+	// (el actual + 7 más)
+	for i := 0; i < 8; i++ {
+		a.leerCaracter()
+	}
+
+	// Devolvemos el lexema completo
+	lexema := string(a.fuente[posicionInicial : a.posicion-1])
+	return Token{Type: TOKEN_DINERO, Lexema: lexema, Linea: lineaActual, Columna: columnaActual}
+}
+
+// reconocerFecha consume y valida el formato de fecha DD-MM-YYYY.
+func (a *AnalizadorLexico) reconocerFecha() Token {
+	lineaActual, columnaActual := a.linea, a.columna
+	posicionInicial := a.posicion - 1 // Captura el primer 'D'
+
+	// Ya hemos validado el patrón con peek, así que solo consumimos los 10 caracteres
+	// (el actual + 9 más)
+	for i := 0; i < 10; i++ {
+		a.leerCaracter()
+	}
+
+	// Devolvemos el lexema completo
+	lexema := string(a.fuente[posicionInicial : a.posicion-1])
+	return Token{Type: TOKEN_FECHA, Lexema: lexema, Linea: lineaActual, Columna: columnaActual}
+}
